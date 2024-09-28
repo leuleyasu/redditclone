@@ -43,14 +43,14 @@ class LoginScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 30),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(  8.0),
                   child: Image.asset(
                     Constants.loginEmotePath,
                     height: 400,
                   ),
                 ),
                 const SizedBox(height: 20),
-                 Responsive(child: const SignInButton()),
+                 const Responsive(child:  SignInButton()),
               ],
             ),
     );
