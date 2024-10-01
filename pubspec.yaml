@@ -44,6 +44,7 @@ dependencies:
   flutter_riverpod: ^2.5.1
   logger: ^2.4.0
   cloud_firestore: ^5.4.2
+  routemaster: ^1.0.1
 
 dev_dependencies:
   flutter_test:
