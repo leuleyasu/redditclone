@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:reddit_clone/feature/AddPostScreen/Screen/addPostScreen.dart';
+import 'package:reddit_clone/feature/FeedScreen/Screen/feedScreen.dart';
 // import 'package:reddit_clone/features/feed/feed_screen.dart';
 // import 'package:reddit_clone/features/home/screens/home_screen.dart';
 // import 'package:reddit_clone/features/post/screens/add_post_screen.dart';

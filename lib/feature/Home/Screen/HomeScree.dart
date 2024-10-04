@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,6 +16,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   int _page = 0;
+  bool isGuest=false;
 
   void displayDrawer(BuildContext context) {
     Scaffold.of(context).openDrawer();
@@ -71,8 +73,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       bottomNavigationBar: isGuest || kIsWeb
           ? null
           : CupertinoTabBar(
-              activeColor: currentTheme.iconTheme.color,
-              backgroundColor: currentTheme.backgroundColor,
+              activeColor: Colors.white,
+              backgroundColor: Colors.amber,
               items: const [
                 BottomNavigationBarItem( 
 

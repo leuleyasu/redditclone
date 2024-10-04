@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:reddit_clone/feature/community/Screen/createcommunity.dart';
+import 'package:routemaster/routemaster.dart';
 
 class CommunityListDrawer extends StatelessWidget {
   const CommunityListDrawer({super.key});
@@ -14,7 +16,7 @@ class CommunityListDrawer extends StatelessWidget {
             leading: const  Icon(Icons.add),
             title: const Text("Create Community"),
             onTap: () {
-              
+             Navigator.push(context, MaterialPageRoute(builder: (context) => CreateCommunity(),));
             },
             
             )

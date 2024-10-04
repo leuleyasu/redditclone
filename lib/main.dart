@@ -44,7 +44,7 @@ class _MyAppState extends ConsumerState<MyApp> {
   @override
   Widget build(
     BuildContext context,
-  ) { 
+  ) {
     return ref.watch(authStateChangeProvider).when(
           data: (data) {
             return MaterialApp.router(
