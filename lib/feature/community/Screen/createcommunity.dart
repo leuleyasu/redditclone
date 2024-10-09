@@ -32,7 +32,7 @@ void createCommunity() {
       
     ,  child: Column(
         children: [
-const Align(
+const Align( 
   alignment: Alignment.topLeft,
   child: Text("Community name"),
 ),

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
@@ -48,6 +50,12 @@ Stream<List<Community>> getUserCommunities(String uid) {
           return Community.fromMap(doc.data() as Map<String, dynamic>);
         }).toList();
       });
+}
+
+Stream<Community>getComunityByName(String name){
+
+  return _communities.doc(name).snapshots().map((event)=>
+  Community.fromMap(event.data() as Map<String,dynamic>));
 }
 
  CollectionReference get _communities=> FirebaseFirestore.instance.collection(FirebaseConstants.communitiesCollection);
