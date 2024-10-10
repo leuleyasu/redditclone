@@ -2,28 +2,94 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reddit_clone/core/common/error_text.dart';
 import 'package:reddit_clone/core/common/loader.dart';
+import 'package:reddit_clone/feature/auth/Controller/authController.dart';
 import 'package:reddit_clone/feature/community/controller/community_controller.dart';
+import 'package:routemaster/routemaster.dart';
 
 class CommunityScreen extends ConsumerWidget {
-  String name;
+final  String name;
 
-   CommunityScreen({super.key, required this.name});
+const   CommunityScreen({super.key, required this.name});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+
+void navigato(){
+  Routemaster.of(context).push("/mod-tools");
+}
+
     final getCommunityProvider=ref.watch(getCommunityByNameProvider(name));
+final user=ref.watch(userProvider)!;
     return Scaffold(
+//     appBar: AppBar(
+//     automaticallyImplyLeading: false,
+//   title:     Center(child: Text(name, style: const TextStyle(color: Colors.red),))
+
+// ),
+
       body: getCommunityProvider.when(data: (data)=>
       NestedScrollView(headerSliverBuilder: (context, innerBoxIsScrolled) {
         return [
           SliverAppBar(
+            floating: true,
             expandedHeight: 150,
+            iconTheme: const  IconThemeData(color: Colors.white),
 flexibleSpace: Stack(
   children: [
     Positioned.fill(child: 
-    Image.network(data.banner))
+    Image.network(data.banner, fit: BoxFit.cover,)),
+
+
+    
   ],
 ),
-          )
+          ),
+
+
+           SliverPadding(padding: const  EdgeInsets.all(15),
+        
+        
+        
+        sliver: SliverList(delegate: SliverChildListDelegate(
+
+          [
+Align(
+  alignment: Alignment.topLeft,
+  child: CircleAvatar(
+    backgroundImage: NetworkImage(data.avatar),
+  ),
+  
+  
+),
+const SizedBox(height: 5,),
+Row(
+  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  children: [
+  Text(data.name, style: const  TextStyle(fontSize: 19, fontWeight: FontWeight.bold),),
+data.mods.contains(user.uid)?
+OutlinedButton(onPressed: (){},
+style: ElevatedButton.styleFrom(
+shape: RoundedRectangleBorder(
+  borderRadius: BorderRadius.circular(20),
+)
+),
+ child: const Text("Mod Tools"))
+:OutlinedButton(onPressed: (){},
+style: ElevatedButton.styleFrom( 
+shape: RoundedRectangleBorder(
+  borderRadius: BorderRadius.circular(20),
+)
+),
+ child:  data.members.contains(user.uid)? const Text("Join"): const Text("Joined"))
+],),
+
+ Padding(padding: 
+const EdgeInsets.only(top: 10)
+,
+child: Text("${data.members.length} Members", style: const TextStyle(fontWeight: FontWeight.bold),),
+),
+
+          ]
+        )),)
         ];
       },
       

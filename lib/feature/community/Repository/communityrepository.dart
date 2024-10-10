@@ -1,13 +1,16 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:reddit_clone/core/common/error_text.dart';
 import 'package:reddit_clone/core/constants/firebase_constants.dart';
 import 'package:reddit_clone/core/failure.dart';
 import 'package:reddit_clone/core/providers/firebase_providers.dart';
 import 'package:reddit_clone/core/type_defs.dart';
 import 'package:reddit_clone/feature/model/comunity_model.dart';
+import 'package:reddit_clone/logger.dart';
 
 final communityRepositoryProvider = Provider<CommunityRepository>((ref) {
   return CommunityRepository(firebasefirestore: ref.watch(firebaseclodFireStore)) ;
@@ -48,15 +51,19 @@ Stream<List<Community>> getUserCommunities(String uid) {
         // Map each document to a Community object
         return snapshot.docs.map((doc) {
           return Community.fromMap(doc.data() as Map<String, dynamic>);
+
+          
         }).toList();
+
+      
       });
 }
-
-Stream<Community>getComunityByName(String name){
-
-  return _communities.doc(name).snapshots().map((event)=>
-  Community.fromMap(event.data() as Map<String,dynamic>));
-}
+  Stream<Community> getCommunityByName(String name) {
+    return _communities.doc(name).snapshots().map((event) {
+      print("Community data:${event.data()}");
+      logger.i(event.data());
+      return Community.fromMap(event.data() as Map<String, dynamic>);});
+  }
 
  CollectionReference get _communities=> FirebaseFirestore.instance.collection(FirebaseConstants.communitiesCollection);
   

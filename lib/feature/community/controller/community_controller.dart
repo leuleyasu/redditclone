@@ -6,6 +6,7 @@ import 'package:reddit_clone/core/utils.dart';
 import 'package:reddit_clone/feature/auth/Controller/authController.dart';
 import 'package:reddit_clone/feature/community/Repository/communityrepository.dart';
 import 'package:reddit_clone/feature/model/comunity_model.dart';
+import 'package:reddit_clone/logger.dart';
 import 'package:routemaster/routemaster.dart';
 
 
@@ -60,7 +61,8 @@ return _communityRepository.getUserCommunities(uid);
 
 
 Stream<Community>getCommunityByName(String name){
-return _communityRepository.getComunityByName(name);
+  logger.i(name);
+return _communityRepository.getCommunityByName(name);
 }
 
 }

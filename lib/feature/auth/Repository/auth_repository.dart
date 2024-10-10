@@ -78,4 +78,14 @@ class AuthRepository {
     return _users().doc(uuid).snapshots().map(
         (event) => UserModel.fromMap(event.data() as Map<String, dynamic>));
   }
+
+
+Future<void> logoutUser() async {
+  try {
+    await _firebaseAuth.signOut();
+    print("User successfully logged out");
+  } catch (e) {
+    print("Error logging out: $e");
+  }
+}
 }
