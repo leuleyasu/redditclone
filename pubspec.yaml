@@ -45,6 +45,7 @@ dependencies:
   logger: ^2.4.0
   cloud_firestore: ^5.4.2
   routemaster: ^1.0.1
+  dotted_border: ^2.1.0
 
 dev_dependencies:
   flutter_test:

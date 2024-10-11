@@ -27,7 +27,7 @@ class CommunityListDrawer extends ConsumerWidget {
     print(community.name);
   }
     final communityProvider = ref.watch(getCommunitieStateProvider);
-    final logoutResult=ref.read(getAuthUser);
+    // final logoutResult=ref.read(getAuthUser);
     
     return Drawer(
       child: SafeArea(

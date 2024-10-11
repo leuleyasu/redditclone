@@ -1,20 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:reddit_clone/theme/pallete.dart';
+import 'package:routemaster/routemaster.dart';
 
 class ModToolsScreen extends StatelessWidget {
-  const ModToolsScreen({super.key});
+  String name;
+  ModToolsScreen({super.key, required this.name});
 
   @override
   Widget build(BuildContext context) {
+    void navigateToEditModTools() {
+      Routemaster.of(context).push("/edit-community/$name");
+    }
+
+
     return Scaffold(
-      appBar: AppBar(title: const  Text("Mod Tools"),),
+      // backgroundColor: Pallete.darkModeAppTheme.scaffoldBackgroundColor,
+      appBar: AppBar(
+        title: const Text("Mod Tools"),
+      ),
       body: Column(
         children: [
-ListTile(
-  title: const Text("Add Moderator"),
-  onTap: () {
-    
-  },
-),
+          ListTile(
+            leading: const Icon(Icons.add),
+            title: const Text("Add Moderator"),
+            onTap: () {},
+          ),
+          ListTile(
+            leading: const Icon(Icons.edit),
+            title: const Text("Edit Moderator"),
+            onTap: navigateToEditModTools,
+          ),
         ],
       ),
     );

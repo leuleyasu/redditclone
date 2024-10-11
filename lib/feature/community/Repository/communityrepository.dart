@@ -65,6 +65,20 @@ Stream<List<Community>> getUserCommunities(String uid) {
       return Community.fromMap(event.data() as Map<String, dynamic>);});
   }
 
+
+FutureVoid editCommunity(Community community) async {
+
+    try {
+      return right(_communities.doc(community.name).update(community.toMap())); 
+    } catch (e) {
+       print(e); 
+      return left(Failure(e.toString()));
+     
+    }
+
+}
+
+
  CollectionReference get _communities=> FirebaseFirestore.instance.collection(FirebaseConstants.communitiesCollection);
   
 }
