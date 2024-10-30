@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:reddit_clone/theme/pallete.dart';
 import 'package:routemaster/routemaster.dart';
 
 class ModToolsScreen extends StatelessWidget {
-  String name;
-  ModToolsScreen({super.key, required this.name});
+ final String name;
+ const  ModToolsScreen({super.key, required this.name});
 
   @override
   Widget build(BuildContext context) {

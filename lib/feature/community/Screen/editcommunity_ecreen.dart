@@ -1,8 +1,10 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:reddit_clone/core/common/error_text.dart';
 import 'package:reddit_clone/core/common/loader.dart';
 import 'package:reddit_clone/core/constants/constants.dart';
@@ -12,8 +14,11 @@ import 'package:reddit_clone/feature/model/comunity_model.dart';
 import 'package:reddit_clone/theme/pallete.dart';
 
 class EditCommunityScreen extends ConsumerStatefulWidget {
-  String name;
-  EditCommunityScreen({super.key, required this.name});
+ final String name;
+ const  EditCommunityScreen({
+    required this.name,
+  });
+ 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
       _EditCommunityScreenState();
@@ -41,12 +46,17 @@ class _EditCommunityScreenState extends ConsumerState<EditCommunityScreen> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
-    void save(Community community){
-  ref.watch(communityStateProvider.notifier).editCommunity(profileFile: profileFile, bannerFile: bannerFile, context: context, community: community);
-}
+    final isLoding = ref.watch(communityStateProvider);
+    void save(Community community) {
+      ref.watch(communityStateProvider.notifier).editCommunity(
+          profileFile: profileFile,
+          bannerFile: bannerFile,
+          context: context,
+          community: community);
+    }
+
     final getcommunityProvider =
         ref.watch(getCommunityByNameProvider(widget.name));
     return getcommunityProvider.when(
@@ -55,9 +65,16 @@ class _EditCommunityScreenState extends ConsumerState<EditCommunityScreen> {
         appBar: AppBar(
           title: const Text("Edit Community"),
           centerTitle: false,
-          actions: [TextButton(onPressed: ()=>save(community), child: const Text("save"))],
+          actions: [
+            TextButton(
+                onPressed: () => save(community), child: const Text("save"))
+          ],
         ),
-        body: Column(
+        body:  isLoding ?
+       const   Center(
+child: Loader(),
+        ):
+        Column(
           children: [
             SizedBox(
               height: 200,

@@ -2,11 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fpdart/fpdart.dart';
+// import 'package:fpdart/fpdart.dart';
 import 'package:reddit_clone/core/constants/constants.dart';
-import 'package:reddit_clone/core/failure.dart';
+// import 'package:reddit_clone/core/failure.dart';
 import 'package:reddit_clone/core/providers/storage_repository_provider.dart';
-import 'package:reddit_clone/core/type_defs.dart';
+// import 'package:reddit_clone/core/type_defs.dart';
 import 'package:reddit_clone/core/utils.dart';
 import 'package:reddit_clone/feature/auth/Controller/authController.dart';
 import 'package:reddit_clone/feature/community/Repository/communityrepository.dart';
@@ -33,10 +33,15 @@ final communityStateProvider =
       ref: ref);
 });
 
-class CommunityController extends StateNotifier<bool> {
-  CommunityRepository _communityRepository;
 
-  StorageRepository _storageRepository;
+final  searchCommunityStateProvider = StreamProvider.family((ref, String query)  {
+  return ref.watch(communityStateProvider.notifier).searchCommunity(query);
+  
+});
+class CommunityController extends StateNotifier<bool> {
+  final CommunityRepository _communityRepository;
+
+  final StorageRepository _storageRepository;
   Ref _ref;
   CommunityController(
       {required CommunityRepository communityrepository,
@@ -76,43 +81,55 @@ class CommunityController extends StateNotifier<bool> {
     return _communityRepository.getCommunityByName(name);
   }
 
-  void editCommunity(
-      {required File? profileFile,
-      required File? bannerFile,
-      required BuildContext context,
-      required Community community}) async {
-    try {
-      if (bannerFile != null) {
-        final res = await _storageRepository.storeFile(
-          path: "communities/banner",
-          id: community.name,
-          file: bannerFile, 
-        );
-
-        res.fold((error) => showSnackBar(context, error.toString()),
-            (data) => community.copyWith(banner: data));
-      }
-      if (profileFile != null) {
-        final res = await _storageRepository.storeFile(
-          path: "communities/profile",
-          id: community.name,
-          file: profileFile,
-        );
-
-        res.fold((error) => showSnackBar(context, error.toString()),
-            (data) => community.copyWith(avatar: data));
-      }
-      final res = await _communityRepository.editCommunity(community);
-      res.fold((onLeft) => showSnackBar(context, onLeft.message),
-          (data) => showSnackBar(context, "Succesfully Updated"));
-
-
-  
-    } catch (e) {
-      print(e.toString());
-      // return left(Failure("message")); 
-
-
+  void editCommunity({
+    required File? profileFile,
+    required File? bannerFile,
+    // required Uint8List? profileWebFile,
+    // required Uint8List? bannerWebFile,
+    required BuildContext context,
+    required Community community,
+  }) async {
+    state = true;
+    if (profileFile != null ) {
+      // communities/profile/memes
+      final res = await _storageRepository.storeFile(
+        path: 'communities/profile',
+        id: community.name,
+        file: profileFile,
+        // webFile: profileWebFile,
+      );
+      res.fold(
+        (l) => showSnackBar(context, l.message),
+        (r) => community = community.copyWith(avatar: r),
+      );
     }
+
+    if (bannerFile != null ) {
+      // communities/banner/memes
+      final res = await _storageRepository.storeFile(
+        path: 'communities/banner',
+        id: community.name,
+        file: bannerFile,
+        // webFile: bannerWebFile,
+      );
+      res.fold(
+        (l) => showSnackBar(context, l.message),
+        (r) => community = community.copyWith(banner: r),
+      );
+    }
+
+    final res = await _communityRepository.editCommunity(community);
+    state = false;
+    res.fold(
+      (l) => showSnackBar(context, l.message),
+      (r) => Routemaster.of(context).pop(),
+    );
   }
+  Stream<List<Community>>searchCommunity(String query){
+    
+    return _communityRepository.searchCommunity(query);
+
+
+  }
+
 }

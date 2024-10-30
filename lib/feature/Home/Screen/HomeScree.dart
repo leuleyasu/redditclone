@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reddit_clone/core/constants/constants.dart';
+import 'package:reddit_clone/feature/Home/Delegate/searchCommunityDelegate.dart';
 import 'package:reddit_clone/feature/Home/Drawer/profile_drawer.dart';
 import 'package:reddit_clone/feature/Home/Screen/drawer.dart';
 import 'package:reddit_clone/feature/auth/Controller/authController.dart';
@@ -16,8 +17,8 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   int _page = 0;
-  bool isGuest=false;
- 
+  bool isGuest = false;
+
   void displayDrawer(BuildContext context) {
     Scaffold.of(context).openDrawer();
   }
@@ -35,7 +36,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final user = ref.watch(userProvider)!;
- 
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home'),
@@ -49,12 +50,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         actions: [
           IconButton(
             onPressed: () {
+              showSearch(context: context, delegate: SearchCommunityDelegate(ref));
             },
             icon: const Icon(Icons.search),
           ),
           IconButton(
-            onPressed: () {
-            },
+            onPressed: () {},
             icon: const Icon(Icons.add),
           ),
           Builder(builder: (context) {
@@ -68,7 +69,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ],
       ),
       body: Constants.tabWidgets[_page],
-      drawer: const  CommunityListDrawer(),
+      drawer: const CommunityListDrawer(),
       endDrawer: isGuest ? null : const ProfileDrawer(),
       bottomNavigationBar: isGuest || kIsWeb
           ? null
@@ -76,8 +77,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               activeColor: Colors.white,
               backgroundColor: Colors.amber,
               items: const [
-                BottomNavigationBarItem( 
-
+                BottomNavigationBarItem(
                   icon: Icon(Icons.home),
                   label: '',
                 ),
