@@ -76,24 +76,64 @@ Stream<List<Community>> getUserCommunities(String uid) {
     }
   }
 
-Stream<List<Community>>searchCommunity( String query ){
-  return _communities.where('name', isGreaterThan: query.isEmpty?null:query, 
-  isLessThan: query.isEmpty?null : query.substring(0, query.length - 1) +
+ Stream<List<Community>> searchCommunity(String query) {
+    return _communities
+        .where(
+          'name',
+          isGreaterThanOrEqualTo: query.isEmpty ? 0 : query,
+          isLessThan: query.isEmpty
+              ? null
+              : query.substring(0, query.length - 1) +
                   String.fromCharCode(
                     query.codeUnitAt(query.length - 1) + 1,
-  
-  )).snapshots(
-
-  ).map((event){
-    List<Community> communities = [];
-    for (var community in event.docs) {
-      communities.add(Community.fromMap(community.data() as Map<String ,dynamic>));
-
+                  ),
+        )
+        .snapshots()
+        .map((event) {
+      List<Community> communities = [];
+      for (var community in event.docs) {
+        communities.add(Community.fromMap(community.data() as Map<String, dynamic>));
+      }
+      return communities;
+    });
+  }
+  FutureVoid joinCommunity(String communityName, String userId) async {
+    try {
+      return right(_communities.doc(communityName).update({
+        'members': FieldValue.arrayUnion([userId]),
+      }));
+    } on FirebaseException catch (e) {
+      throw e.message!;
+    } catch (e) {
+      return left(Failure(e.toString()));
     }
-    return communities;
-  });
-}
+  }
+  FutureVoid leaveCommunity(String communityName, String userId) async {
+    try {
+      return right(_communities.doc(communityName).update({
+        'members': FieldValue.arrayRemove([userId]),
+      }));
+    } on FirebaseException catch (e) {
+      throw e.message!;
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  
+  }
 
+
+    FutureVoid addMods(String communityName, List<String> uids) async {
+    try {
+      return right(_communities.doc(communityName).update({
+        'mods': uids,
+      }));
+    } on FirebaseException catch (e) {
+      throw e.message!;
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
  CollectionReference get _communities=> FirebaseFirestore.instance.collection(FirebaseConstants.communitiesCollection);
+ 
   
 }

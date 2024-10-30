@@ -82,6 +82,7 @@ class AuthRepository {
 
 Future<void> logoutUser() async {
   try {
+    await _googleSignIn.signOut();
     await _firebaseAuth.signOut();
     print("User successfully logged out");
   } catch (e) {

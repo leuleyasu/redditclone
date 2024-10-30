@@ -11,6 +11,9 @@ class ModToolsScreen extends StatelessWidget {
       Routemaster.of(context).push("/edit-community/$name");
     }
 
+ void navigateToAddModTools() {
+      Routemaster.of(context).push("/add-mods/$name");
+    }
 
     return Scaffold(
       // backgroundColor: Pallete.darkModeAppTheme.scaffoldBackgroundColor,
@@ -22,7 +25,9 @@ class ModToolsScreen extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.add),
             title: const Text("Add Moderator"),
-            onTap: () {},
+            onTap: () {
+              navigateToAddModTools();
+            },
           ),
           ListTile(
             leading: const Icon(Icons.edit),
